@@ -1,0 +1,4 @@
+{
+    "codedeploy.isApplicationWorkspace": false,
+    "jest.jestCommandLine": "yarn test"
+}

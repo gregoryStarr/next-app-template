@@ -1,6 +1,9 @@
-import '@mantine/core/styles.css';
 import React from 'react';
+import { getServerSession } from 'next-auth';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
+import SessionProvider from '../components/SessionProvider';
+import { NavMenu } from '../components/layout/NavMenu';
+import '@mantine/core/styles.css';
 import { theme } from '../theme';
 
 export const metadata = {
@@ -8,7 +11,9 @@ export const metadata = {
   description: 'I am using Mantine with Next.js!',
 };
 
-export default function RootLayout({ children }: { children: any }) {
+export default async function RootLayout({ children }: { children: any }) {
+  const session = await getServerSession();
+
   return (
     <html lang="en">
       <head>
@@ -20,7 +25,14 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <SessionProvider session={session}>
+          <MantineProvider theme={theme}>
+            <main>
+              <NavMenu />
+              {children}
+            </main>
+          </MantineProvider>
+        </SessionProvider>
       </body>
     </html>
   );
